@@ -4,7 +4,7 @@ services:
   backend:
     #image: ghcr.io/get-convex/self-hosted-backend:latest
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile.backend
     ports:
       - "${PORT:-3210}:3210"
