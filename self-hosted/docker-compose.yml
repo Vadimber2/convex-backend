@@ -3,9 +3,10 @@ version: "3"
 services:
   backend:
     #image: ghcr.io/get-convex/self-hosted-backend:latest
-    context: .
-    dockerfile: Dockerfile.backend
-    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      platform: linux/amd64
     ports:
       - "${PORT:-3210}:3210"
       - "${SITE_PROXY_PORT:-3211}:3211"
