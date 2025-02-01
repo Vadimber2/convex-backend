@@ -22,7 +22,7 @@ services:
       - CONVEX_SITE_ORIGIN=${URL_BASE:-http://127.0.0.1}:${SITE_PROXY_PORT:-3211}
     container_name: convex-local-backend
     healthcheck:
-      test: curl -f ${URL_BASE:-http://127.0.0.1}:${PORT:-3210}/version
+      test: curl -f http://localhost:3210/version
       interval: 5s
       start_period: 5s
 
