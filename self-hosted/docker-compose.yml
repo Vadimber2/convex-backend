@@ -22,7 +22,7 @@ services:
       - CONVEX_SITE_ORIGIN=${URL_BASE:-http://127.0.0.1}:${SITE_PROXY_PORT:-3211}
     container_name: convex-local-backend
     healthcheck:
-      test: curl -f http://localhost:${PORT:-3210}/version
+      test: curl -f ${URL_BASE:-http://127.0.0.1}:${PORT:-3210}/version
       interval: 5s
       start_period: 5s
 
@@ -35,7 +35,7 @@ services:
       - "${DASHBOARD_PORT:-6791}:6791"
     environment:
       - DASHBOARD_PORT=${DASHBOARD_PORT:-6791}
-      - NEXT_PUBLIC_DEPLOYMENT_URL=http://127.0.0.1:${PORT:-3210}
+      - NEXT_PUBLIC_DEPLOYMENT_URL=${URL_BASE:-http://127.0.0.1}:${PORT:-3210}
     depends_on:
       backend:
         condition: service_healthy
