@@ -11,29 +11,16 @@ product includes a generous free tier and provides a seamless, reliable,
 cost-effective platform that allows you to focus on building your application
 without worrying about infrastructure.
 
-You are welcome to use this code to run your application, either for local
-testing or in production, but you are on your own managing it and ensuring the
-system is reliable and secure. In particular you should ensure you have strong
-competency with regards to:
+That being said, we understand that won't work for everyone. You are welcome to
+self-host Convex on your own infrastructure instead.
 
-- Hosting
-- Traffic routing
-- Backups and replication
-- Monitoring
-- Upgrades
-- Migration between versions
-
-No official support is provided for the open source version of Convex but
-community support is available in the `#open-source` channel in the
-[Convex Discord](https://discord.gg/convex).
+Community support is available for self-hosted Convex in the `#open-source`
+channel in the [Convex Discord](https://discord.gg/convex).
 
 Development of the Convex backend is led by the Convex team. We
 [welcome bug fixes](./CONTRIBUTING.md) and
 [love receiving feedback](https://discord.gg/convex). We keep this repository
 synced with any internal development work within a handful of days.
-
-All that being said, if you choose to self-host, here's a guide on getting
-started.
 
 # Self Hosting Guide
 
@@ -95,11 +82,17 @@ convex in Docker.
 
 ```sh
 cd self-hosted
-# Add your INSTANCE_NAME, INSTANCE_SECRET, and ADMIN_KEY to an .env file
 # Pull the latest docker images
 docker compose pull
 # Run the containers
 docker compose up
+```
+
+Once your Convex backend is running in Docker, you can ask it to generate admin
+keys.
+
+```sh
+docker exec convex-local-backend ./generate_admin_key.sh
 ```
 
 Visit the dashboard at `http://localhost:6791` and use the CLI to push functions
