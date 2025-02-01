@@ -22,52 +22,52 @@ services:
       test: 'curl -f http://localhost:3210/version'
       interval: 5s
       start_period: 5s
-  labels:
-    - traefik.enable=true
-    - traefik.http.middlewares.gzip.compress=true
-    - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
-  
-    # --------------------------------------
-    # HTTP → для CONVEX_CLOUD_ORIGIN (порт 3310)
-    # --------------------------------------
-    - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=http
-    - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=redirect-to-https
-    - "traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_CLOUD_ORIGIN}`) && PathPrefix(`/`)"
-    - "traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
-  
-    # --------------------------------------
-    # HTTP → для CONVEX_SITE_ORIGIN (порт 3311)
-    # --------------------------------------
-    - traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=http
-    - traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=redirect-to-https
-    - "traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_SITE_ORIGIN}`) && PathPrefix(`/`)"
-    - "traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
-  
-    # --------------------------------------
-    # HTTPS → для CONVEX_CLOUD_ORIGIN (порт 3310)
-    # --------------------------------------
-    - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=https
-    - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip
-    - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_CLOUD_ORIGIN}`) && PathPrefix(`/`)"
-    - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
-    - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.tls.certresolver=letsencrypt
-    - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.tls=true
-  
-    # --------------------------------------
-    # HTTPS → для CONVEX_SITE_ORIGIN (порт 3311)
-    # --------------------------------------
-    - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=https
-    - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip
-    - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_SITE_ORIGIN}`) && PathPrefix(`/`)"
-    - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
-    - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.tls.certresolver=letsencrypt
-    - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.tls=true
-  
-    # --------------------------------------
-    # Описание service для каждого порта
-    # --------------------------------------
-    - "traefik.http.services.service-0-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=${PORT}"
-    - "traefik.http.services.service-1-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=${SITE_PROXY_PORT}"
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+    
+      # --------------------------------------
+      # HTTP → для CONVEX_CLOUD_ORIGIN (порт 3310)
+      # --------------------------------------
+      - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=http
+      - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=redirect-to-https
+      - "traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_CLOUD_ORIGIN}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
+    
+      # --------------------------------------
+      # HTTP → для CONVEX_SITE_ORIGIN (порт 3311)
+      # --------------------------------------
+      - traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=http
+      - traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=redirect-to-https
+      - "traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_SITE_ORIGIN}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
+    
+      # --------------------------------------
+      # HTTPS → для CONVEX_CLOUD_ORIGIN (порт 3310)
+      # --------------------------------------
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=https
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip
+      - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_CLOUD_ORIGIN}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.tls=true
+    
+      # --------------------------------------
+      # HTTPS → для CONVEX_SITE_ORIGIN (порт 3311)
+      # --------------------------------------
+      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=https
+      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip
+      - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_SITE_ORIGIN}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
+      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.tls=true
+    
+      # --------------------------------------
+      # Описание service для каждого порта
+      # --------------------------------------
+      - "traefik.http.services.service-0-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=${PORT}"
+      - "traefik.http.services.service-1-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=${SITE_PROXY_PORT}"
 
   dashboard:
     build:
