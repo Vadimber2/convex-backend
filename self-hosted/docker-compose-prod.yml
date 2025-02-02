@@ -37,8 +37,8 @@ services:
       #- traefik.http.routers.https-0-a8w8kgc8skcc4co0440804wk-backend.middlewares=gzip,force-http-scheme
       #- traefik.http.routers.https-1-a8w8kgc8skcc4co0440804wk-backend.middlewares=gzip,force-http-scheme
 
-      - "traefik.http.services.service-0-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.scheme=http"
-      - "traefik.http.services.service-1-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.scheme=http"
+      #- "traefik.http.services.service-0-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.scheme=http"
+      #- "traefik.http.services.service-1-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.scheme=http"
       - "traefik.http.services.service-0-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.port=3210"
       - "traefik.http.services.service-1-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.port=3211"  
       
