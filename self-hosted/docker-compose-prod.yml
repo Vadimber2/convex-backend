@@ -27,12 +27,12 @@ services:
       start_period: 5s
     labels:
       - "traefik.docker.network=ico4cswwkc0wko4ssoo8k4gk"
-      - "traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
-      - "traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
-      - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
-      - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
-      - "traefik.http.services.service-0-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=3210"
-      - "traefik.http.services.service-1-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=3211"     
+      - "traefik.http.routers.http-0-a8w8kgc8skcc4co0440804wk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
+      - "traefik.http.routers.http-1-a8w8kgc8skcc4co0440804wk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
+      - "traefik.http.routers.https-0-a8w8kgc8skcc4co0440804wk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
+      - "traefik.http.routers.https-1-a8w8kgc8skcc4co0440804wk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
+      - "traefik.http.services.service-0-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.port=3210"
+      - "traefik.http.services.service-1-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.port=3211"     
       
   dashboard:
     build:
