@@ -8,5 +8,6 @@ services:
     ports:
       - "${DASHBOARD_PORT:-6791}:6791"
     environment:
+      - DASHBOARD_PORT=${DASHBOARD_PORT}
       - NEXT_PUBLIC_DEPLOYMENT_URL=${DEPLOYMENT_URL}
       - NEXT_PUBLIC_ADMIN_KEY=${ADMIN_KEY}
