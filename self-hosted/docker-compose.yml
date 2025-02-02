@@ -1,87 +1,48 @@
+version: "3"
+
 services:
   backend:
+    #image: ghcr.io/get-convex/self-hosted-backend:latest
     build:
       context: ..
       dockerfile: self-hosted/Dockerfile.backend
     ports:
-      - '${PORT:-3210}:3210'
-      - '${SITE_PROXY_PORT:-3211}:3211'
+      - "${PORT:-3210}:3210"
+      - "${SITE_PROXY_PORT:-3211}:3211"
     volumes:
-      - 'ico4cswwkc0wko4ssoo8k4gk_data:/convex/data'
+      - data:/convex/data
     environment:
-      PORT: '${PORT:-3210}'
-      SITE_PROXY_PORT: '${SITE_PROXY_PORT:-3211}'
-      INSTANCE_NAME: '${INSTANCE_NAME}'
-      INSTANCE_SECRET: '${INSTANCE_SECRET}'
-      CONVEX_RELEASE_VERSION_DEV: '${CONVEX_RELEASE_VERSION_DEV}'
-      ACTIONS_USER_TIMEOUT_SECS: '${ACTIONS_USER_TIMEOUT_SECS}'
-      CONVEX_CLOUD_ORIGIN: '${CONVEX_CLOUD_ORIGIN}'
-      CONVEX_SITE_ORIGIN: '${CONVEX_SITE_ORIGIN}'
+      - PORT=${PORT:-3210}
+      - SITE_PROXY_PORT=${SITE_PROXY_PORT:-3211}
+      - INSTANCE_NAME=${INSTANCE_NAME}
+      - INSTANCE_SECRET=${INSTANCE_SECRET}
+      - CONVEX_RELEASE_VERSION_DEV=${CONVEX_RELEASE_VERSION_DEV}
+      - ACTIONS_USER_TIMEOUT_SECS=${ACTIONS_USER_TIMEOUT_SECS}
+      - CONVEX_CLOUD_ORIGIN=${URL_BASE:-http://127.0.0.1}:${PORT:-3210}
+      - CONVEX_SITE_ORIGIN=${URL_BASE:-http://127.0.0.1}:${SITE_PROXY_PORT:-3211}
     container_name: convex-local-backend
     healthcheck:
-      test: 'curl -f http://localhost:3210/version'
+      test: curl -f http://localhost:3210/version
       interval: 5s
       start_period: 5s
     labels:
-      - traefik.enable=true
-      - traefik.http.middlewares.gzip.compress=true
-      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
-    
-      # --------------------------------------
-      # HTTP → для CONVEX_CLOUD_ORIGIN (порт 3310)
-      # --------------------------------------
-      - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=http
-      - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=redirect-to-https
-      - "traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_CLOUD_ORIGIN}`) && PathPrefix(`/`)"
-      - "traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
-    
-      # --------------------------------------
-      # HTTP → для CONVEX_SITE_ORIGIN (порт 3311)
-      # --------------------------------------
-      - traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=http
-      - traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=redirect-to-https
-      - "traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_SITE_ORIGIN}`) && PathPrefix(`/`)"
-      - "traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
-    
-      # --------------------------------------
-      # HTTPS → для CONVEX_CLOUD_ORIGIN (порт 3310)
-      # --------------------------------------
-      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=https
-      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip
-      - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_CLOUD_ORIGIN}`) && PathPrefix(`/`)"
-      - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
-      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.tls.certresolver=letsencrypt
-      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.tls=true
-    
-      # --------------------------------------
-      # HTTPS → для CONVEX_SITE_ORIGIN (порт 3311)
-      # --------------------------------------
-      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=https
-      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip
-      - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`${CONVEX_SITE_ORIGIN}`) && PathPrefix(`/`)"
-      - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
-      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.tls.certresolver=letsencrypt
-      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.tls=true
-    
-      # --------------------------------------
-      # Описание service для каждого порта
-      # --------------------------------------
-      - "traefik.http.services.service-0-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=${PORT}"
-      - "traefik.http.services.service-1-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=${SITE_PROXY_PORT}"
+      - traefik.http.routers.convexcoredev-secure.service=backend-3310
+      - traefik.http.services.backend-3310.loadbalancer.server.port=3310
 
+      
   dashboard:
     build:
       context: .
       dockerfile: Dockerfile.dashboard
-    image: 'ghcr.io/get-convex/self-hosted-dashboard:latest'
+    image: ghcr.io/get-convex/self-hosted-dashboard:latest
     ports:
-      - '${DASHBOARD_PORT:-6791}:6791'
+      - "${DASHBOARD_PORT:-6791}:6791"
     environment:
-      DASHBOARD_PORT: '${DASHBOARD_PORT:-6791}'
-      NEXT_PUBLIC_DEPLOYMENT_URL: '${CONVEX_CLOUD_ORIGIN}'
+      - DASHBOARD_PORT=${DASHBOARD_PORT:-6791}
+      - NEXT_PUBLIC_DEPLOYMENT_URL=${URL_BASE:-http://127.0.0.1}:${PORT:-3210}
     depends_on:
       backend:
         condition: service_healthy
-    
+
 volumes:
   data:
