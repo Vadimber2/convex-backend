@@ -18,8 +18,8 @@ services:
       - INSTANCE_SECRET=${INSTANCE_SECRET}
       - CONVEX_RELEASE_VERSION_DEV=${CONVEX_RELEASE_VERSION_DEV}
       - ACTIONS_USER_TIMEOUT_SECS=${ACTIONS_USER_TIMEOUT_SECS}
-      - CONVEX_CLOUD_ORIGIN=${URL_BASE:-http://127.0.0.1}:${PORT:-3210}
-      - CONVEX_SITE_ORIGIN=${URL_BASE:-http://127.0.0.1}:${SITE_PROXY_PORT:-3211}
+      - CONVEX_CLOUD_ORIGIN=${CONVEX_CLOUD_ORIGIN}
+      - CONVEX_SITE_ORIGIN=${CONVEX_SITE_ORIGIN}
     container_name: convex-local-backend
     healthcheck:
       test: curl -f http://localhost:3210/version
@@ -43,7 +43,7 @@ services:
       - "${DASHBOARD_PORT:-6791}:6791"
     environment:
       - DASHBOARD_PORT=${DASHBOARD_PORT:-6791}
-      - NEXT_PUBLIC_DEPLOYMENT_URL=${URL_BASE:-http://127.0.0.1}:${PORT:-3210}
+      - NEXT_PUBLIC_DEPLOYMENT_URL=${CONVEX_SITE_ORIGIN}
     depends_on:
       backend:
         condition: service_healthy
