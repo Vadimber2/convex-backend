@@ -43,7 +43,7 @@ services:
       - "${DASHBOARD_PORT:-6791}:6791"
     environment:
       - DASHBOARD_PORT=${DASHBOARD_PORT:-6791}
-      - NEXT_PUBLIC_DEPLOYMENT_URL=${CONVEX_SITE_ORIGIN}
+      - NEXT_PUBLIC_DEPLOYMENT_URL=${CONVEX_CLOUD_ORIGIN}
     depends_on:
       backend:
         condition: service_healthy
