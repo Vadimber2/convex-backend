@@ -1,48 +1,151 @@
-version: "3"
-
 services:
   backend:
-    #image: ghcr.io/get-convex/self-hosted-backend:latest
     build:
       context: ..
       dockerfile: self-hosted/Dockerfile.backend
     ports:
-      - "${PORT:-3210}:3210"
-      - "${SITE_PROXY_PORT:-3211}:3211"
+      - '${PORT:-3210}:3210'
+      - '${SITE_PROXY_PORT:-3211}:3211'
     volumes:
-      - data:/convex/data
+      - 'ico4cswwkc0wko4ssoo8k4gk_data:/convex/data'
     environment:
-      - PORT=${PORT:-3210}
-      - SITE_PROXY_PORT=${SITE_PROXY_PORT:-3211}
-      - INSTANCE_NAME=${INSTANCE_NAME}
-      - INSTANCE_SECRET=${INSTANCE_SECRET}
-      - CONVEX_RELEASE_VERSION_DEV=${CONVEX_RELEASE_VERSION_DEV}
-      - ACTIONS_USER_TIMEOUT_SECS=${ACTIONS_USER_TIMEOUT_SECS}
-      - CONVEX_CLOUD_ORIGIN=${URL_BASE:-http://127.0.0.1}:${PORT:-3210}
-      - CONVEX_SITE_ORIGIN=${URL_BASE:-http://127.0.0.1}:${SITE_PROXY_PORT:-3211}
-    container_name: convex-local-backend
+      PORT: '${PORT:-3210}'
+      SITE_PROXY_PORT: '${SITE_PROXY_PORT:-3211}'
+      INSTANCE_NAME: '${INSTANCE_NAME}'
+      INSTANCE_SECRET: '${INSTANCE_SECRET}'
+      CONVEX_RELEASE_VERSION_DEV: '${CONVEX_RELEASE_VERSION_DEV}'
+      ACTIONS_USER_TIMEOUT_SECS: '${ACTIONS_USER_TIMEOUT_SECS}'
+      CONVEX_CLOUD_ORIGIN: '${URL_BASE:-http://127.0.0.1}:${PORT:-3210}'
+      CONVEX_SITE_ORIGIN: '${URL_BASE:-http://127.0.0.1}:${SITE_PROXY_PORT:-3211}'
+      COOLIFY_BRANCH: '"main"'
+      COOLIFY_RESOURCE_UUID: ico4cswwkc0wko4ssoo8k4gk
+      COOLIFY_CONTAINER_NAME: backend-ico4cswwkc0wko4ssoo8k4gk-084230779103
+      COOLIFY_URL: 'https://convexcoredev.xpertnet.cx,https://httpactionsdev.xpertnet.cx'
+      COOLIFY_FQDN: 'convexcoredev.xpertnet.cx,httpactionsdev.xpertnet.cx'
+    container_name: backend-ico4cswwkc0wko4ssoo8k4gk-084230779103
     healthcheck:
-      test: curl -f http://localhost:3210/version
+      test: 'curl -f http://localhost:3210/version'
       interval: 5s
       start_period: 5s
     labels:
       - traefik.http.routers.convexcoredev-secure.service=backend-3310
       - traefik.http.services.backend-3310.loadbalancer.server.port=3310
+      - coolify.managed=true
+      - coolify.version=4.0.0-beta.390
+      - coolify.applicationId=21
+      - coolify.type=application
+      - coolify.name=backend-ico4cswwkc0wko4ssoo8k4gk-084230779103
+      - coolify.resourceName=vadimber2convex-backendmain-bwccg4kkcgw48ogsocs80gs8
+      - coolify.projectName=main
+      - coolify.serviceName=vadimber2convex-backendmain-bwccg4kkcgw48ogsocs80gs8
+      - coolify.environmentName=development
+      - coolify.pullRequestId=0
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=http
+      - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=redirect-to-https
+      - 'traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`convexcoredev.xpertnet.cx`) && PathPrefix(`/`)'
+      - "traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
 
+      - traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=http
+      - traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=redirect-to-https
+      - 'traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`httpactionsdev.xpertnet.cx`) && PathPrefix(`/`)'
+      - "traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
       
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=https
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip
+      - 'traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`convexcoredev.xpertnet.cx`) && PathPrefix(`/`)'
+      - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.tls=true
+      
+      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.entryPoints=https
+      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip
+      - 'traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.rule=Host(`httpactionsdev.xpertnet.cx`) && PathPrefix(`/`)'
+      - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
+      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.tls=true
+
+      # --------------------------------------
+      # Описание service для каждого порта
+      # --------------------------------------
+      - "traefik.http.services.service-0-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=3310"
+      - "traefik.http.services.service-1-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=3311"
+      
+      - 'caddy_0.encode=zstd gzip'
+      - 'caddy_0.handle_path.0_reverse_proxy={{upstreams}}'
+      - 'caddy_0.handle_path=/*'
+      - caddy_0.header=-Server
+      - 'caddy_0.try_files={path} /index.html /index.php'
+      - 'caddy_0=https://convexcoredev.xpertnet.cx'
+      - 'caddy_1.encode=zstd gzip'
+      - 'caddy_1.handle_path.1_reverse_proxy={{upstreams}}'
+      - 'caddy_1.handle_path=/*'
+      - caddy_1.header=-Server
+      - 'caddy_1.try_files={path} /index.html /index.php'
+      - 'caddy_1=https://httpactionsdev.xpertnet.cx'
+      - caddy_ingress_network=ico4cswwkc0wko4ssoo8k4gk
+    restart: unless-stopped
+    networks:
+      ico4cswwkc0wko4ssoo8k4gk: null
   dashboard:
     build:
       context: .
       dockerfile: Dockerfile.dashboard
-    image: ghcr.io/get-convex/self-hosted-dashboard:latest
+    image: 'ghcr.io/get-convex/self-hosted-dashboard:latest'
     ports:
-      - "${DASHBOARD_PORT:-6791}:6791"
+      - '${DASHBOARD_PORT:-6791}:6791'
     environment:
-      - DASHBOARD_PORT=${DASHBOARD_PORT:-6791}
-      - NEXT_PUBLIC_DEPLOYMENT_URL=${URL_BASE:-http://127.0.0.1}:${PORT:-3210}
+      DASHBOARD_PORT: '${DASHBOARD_PORT:-6791}'
+      NEXT_PUBLIC_DEPLOYMENT_URL: '${URL_BASE:-http://127.0.0.1}:${PORT:-3210}'
+      COOLIFY_BRANCH: '"main"'
+      COOLIFY_RESOURCE_UUID: ico4cswwkc0wko4ssoo8k4gk
+      COOLIFY_CONTAINER_NAME: dashboard-ico4cswwkc0wko4ssoo8k4gk-084230786270
+      COOLIFY_URL: 'https://lwcgcgo0cgcc088wgko8c4ok.xpertnet.cx'
+      COOLIFY_FQDN: lwcgcgo0cgcc088wgko8c4ok.xpertnet.cx
     depends_on:
       backend:
         condition: service_healthy
-
+    container_name: dashboard-ico4cswwkc0wko4ssoo8k4gk-084230786270
+    restart: unless-stopped
+    labels:
+      - coolify.managed=true
+      - coolify.version=4.0.0-beta.390
+      - coolify.applicationId=21
+      - coolify.type=application
+      - coolify.name=dashboard-ico4cswwkc0wko4ssoo8k4gk-084230786270
+      - coolify.resourceName=vadimber2convex-backendmain-bwccg4kkcgw48ogsocs80gs8
+      - coolify.projectName=main
+      - coolify.serviceName=vadimber2convex-backendmain-bwccg4kkcgw48ogsocs80gs8
+      - coolify.environmentName=development
+      - coolify.pullRequestId=0
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-dashboard.entryPoints=http
+      - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-dashboard.middlewares=redirect-to-https
+      - 'traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-dashboard.rule=Host(`lwcgcgo0cgcc088wgko8c4ok.xpertnet.cx`) && PathPrefix(`/`)'
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-dashboard.entryPoints=https
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-dashboard.middlewares=gzip
+      - 'traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-dashboard.rule=Host(`lwcgcgo0cgcc088wgko8c4ok.xpertnet.cx`) && PathPrefix(`/`)'
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-dashboard.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-dashboard.tls=true
+      - 'caddy_0.encode=zstd gzip'
+      - 'caddy_0.handle_path.0_reverse_proxy={{upstreams}}'
+      - 'caddy_0.handle_path=/*'
+      - caddy_0.header=-Server
+      - 'caddy_0.try_files={path} /index.html /index.php'
+      - 'caddy_0=https://lwcgcgo0cgcc088wgko8c4ok.xpertnet.cx'
+      - caddy_ingress_network=ico4cswwkc0wko4ssoo8k4gk
+    networks:
+      ico4cswwkc0wko4ssoo8k4gk: null
 volumes:
-  data:
+  ico4cswwkc0wko4ssoo8k4gk_data:
+    name: ico4cswwkc0wko4ssoo8k4gk_data
+networks:
+  ico4cswwkc0wko4ssoo8k4gk:
+    name: ico4cswwkc0wko4ssoo8k4gk
+    external: true
+configs: {  }
+secrets: {  }
