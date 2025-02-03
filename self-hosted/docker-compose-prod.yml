@@ -12,8 +12,8 @@ services:
     volumes:
       - data:/convex/data
     environment:
-      - RUST_BACKTRACE=full
-      - RUST_LOG=trace,common::errors=debug
+      # - RUST_BACKTRACE=full
+      # - RUST_LOG=trace,common::errors=debug
       - PORT=${PORT:-3210}
       - SITE_PROXY_PORT=${SITE_PROXY_PORT:-3211}
       - INSTANCE_NAME=${INSTANCE_NAME}
