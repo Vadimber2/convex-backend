@@ -12,6 +12,8 @@ services:
     volumes:
       - data:/convex/data
     environment:
+      - RUST_BACKTRACE=full
+      - RUST_LOG=trace,common::errors=debug
       - PORT=${PORT:-3210}
       - SITE_PROXY_PORT=${SITE_PROXY_PORT:-3211}
       - INSTANCE_NAME=${INSTANCE_NAME}
@@ -26,7 +28,14 @@ services:
       interval: 5s
       start_period: 5s
     labels:
-      - "traefik.docker.network=ico4cswwkc0wko4ssoo8k4gk"
+      #- "traefik.docker.network=ico4cswwkc0wko4ssoo8k4gk"
+      # Примените middleware к роутерам
+      - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip,force-http-scheme"
+      - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip,force-http-scheme"
+
+      - "traefik.http.services.service-0-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.scheme=http"
+      - "traefik.http.services.service-1-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.scheme=http"
+      
       - "traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
       - "traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
       - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
