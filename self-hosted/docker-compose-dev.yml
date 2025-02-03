@@ -28,21 +28,21 @@ services:
       interval: 5s
       start_period: 5s
     labels:
-      #- "traefik.docker.network=ico4cswwkc0wko4ssoo8k4gk"
-      # Примените middleware к роутерам
-      - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip,force-http-scheme"
-      - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip,force-http-scheme"
-
-      - "traefik.http.services.service-0-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.scheme=http"
-      - "traefik.http.services.service-1-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.scheme=http"
-      
-      - "traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
-      - "traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
-      - "traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend"
-      - "traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend"
-      - "traefik.http.services.service-0-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=3210"
-      - "traefik.http.services.service-1-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=3211"     
-      
+      # Роутеры HTTPS (при входящем HTTPS Traefik завершает TLS, а потом через middleware передаёт в контейнер HTTP)
+      - 'traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip,force-http-scheme'
+      - 'traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.middlewares=gzip,force-http-scheme'
+      # Задаём схему для связи с контейнером – http
+      - traefik.http.services.service-0-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.scheme=http
+      - traefik.http.services.service-1-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.scheme=http
+      - traefik.http.routers.http-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend
+      - traefik.http.routers.http-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend
+      - traefik.http.routers.https-0-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-0-ico4cswwkc0wko4ssoo8k4gk-backend
+      - traefik.http.routers.https-1-ico4cswwkc0wko4ssoo8k4gk-backend.service=service-1-ico4cswwkc0wko4ssoo8k4gk-backend
+      - traefik.http.services.service-0-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=3210
+      - traefik.http.services.service-1-ico4cswwkc0wko4ssoo8k4gk-backend.loadbalancer.server.port=3211
+      # ★ Новая метка: определение middleware force-http-scheme,
+      # которая задаёт заголовок X-Forwarded-Proto со значением http.
+      - "traefik.http.middlewares.force-http-scheme.headers.customrequestheaders.X-Forwarded-Proto=http"
   dashboard:
     build:
       context: .
