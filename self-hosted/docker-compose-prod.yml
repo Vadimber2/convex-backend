@@ -12,8 +12,8 @@ services:
     volumes:
       - data:/convex/data
     environment:
-      #- RUST_BACKTRACE=full
-      #- RUST_LOG=trace,common::errors=debug
+      - RUST_BACKTRACE=full
+      - RUST_LOG=trace,common::errors=debug
       - PORT=${PORT:-3210}
       - SITE_PROXY_PORT=${SITE_PROXY_PORT:-3211}
       - INSTANCE_NAME=${INSTANCE_NAME}
@@ -27,27 +27,7 @@ services:
       test: curl -f http://localhost:3210/version
       interval: 5s
       start_period: 5s
-    labels:
-      - "traefik.docker.network=a8w8kgc8skcc4co0440804wk"
-      # В labels контейнера
-      #- traefik.http.middlewares.force-http-scheme.replacepathregex.regex=^https://(.*)
-      #- traefik.http.middlewares.force-http-scheme.replacepathregex.replacement=http://$$1
 
-      # Примените middleware к роутерам
-      #- traefik.http.routers.https-0-a8w8kgc8skcc4co0440804wk-backend.middlewares=gzip,force-http-scheme
-      #- traefik.http.routers.https-1-a8w8kgc8skcc4co0440804wk-backend.middlewares=gzip,force-http-scheme
-
-      #- "traefik.http.services.service-0-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.scheme=http"
-      #- "traefik.http.services.service-1-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.scheme=http"
-      - "traefik.http.services.service-0-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.port=3210"
-      - "traefik.http.services.service-1-a8w8kgc8skcc4co0440804wk-backend.loadbalancer.server.port=3211"  
-      
-      - "traefik.http.routers.http-0-a8w8kgc8skcc4co0440804wk-backend.service=service-0-a8w8kgc8skcc4co0440804wk-backend"
-      - "traefik.http.routers.http-1-a8w8kgc8skcc4co0440804wk-backend.service=service-1-a8w8kgc8skcc4co0440804wk-backend"
-      - "traefik.http.routers.https-0-a8w8kgc8skcc4co0440804wk-backend.service=service-0-a8w8kgc8skcc4co0440804wk-backend"
-      - "traefik.http.routers.https-1-a8w8kgc8skcc4co0440804wk-backend.service=service-1-a8w8kgc8skcc4co0440804wk-backend"
- 
-      
   dashboard:
     build:
       context: .
@@ -57,7 +37,7 @@ services:
       - "${DASHBOARD_PORT:-6791}:6791"
     environment:
       - DASHBOARD_PORT=${DASHBOARD_PORT:-6791}
-      - NEXT_PUBLIC_DEPLOYMENT_URL=${CONVEX_CLOUD_ORIGIN}
+      - NEXT_PUBLIC_DEPLOYMENT_URL=${NEXT_PUBLIC_DEPLOYMENT_URL}
     depends_on:
       backend:
         condition: service_healthy
