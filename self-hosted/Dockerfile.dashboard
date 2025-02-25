@@ -12,4 +12,6 @@ RUN rush update
 
 EXPOSE 6791
 
-CMD NEXT_PUBLIC_DEPLOYMENT_URL=$NEXT_PUBLIC_DEPLOYMENT_URL rush build -t dashboard-self-hosted && npm start
+#CMD NEXT_PUBLIC_DEPLOYMENT_URL=$NEXT_PUBLIC_DEPLOYMENT_URL rush build -t dashboard-self-hosted && npm start
+
+CMD NEXT_PUBLIC_DEPLOYMENT_URL=$NEXT_PUBLIC_DEPLOYMENT_URL rush build -t dashboard-self-hosted && node .next/standalone/server.js
