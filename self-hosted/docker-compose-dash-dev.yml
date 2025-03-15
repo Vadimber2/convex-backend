@@ -1,10 +1,20 @@
 version: "3"
 services:
+  #dashboard:
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile.dashboard
+  #  image: ghcr.io/get-convex/self-hosted-dashboard:latest
+  #  ports:
+  #    - "${DASHBOARD_PORT:-6791}:6791"
+  #  environment:
+  #    - DASHBOARD_PORT=${DASHBOARD_PORT}
+  #    - NEXT_PUBLIC_DEPLOYMENT_URL=${DEPLOYMENT_URL}
+  #    - NEXT_PUBLIC_ADMIN_KEY=${ADMIN_KEY}
   dashboard:
-    build:
-      context: .
-      dockerfile: Dockerfile.dashboard
-    image: ghcr.io/get-convex/self-hosted-dashboard:latest
+    image: ghcr.io/get-convex/convex-dashboard:5143fec81f146ca67495c12c6b7a15c5802c37e2
+    stop_grace_period: 10s
+    stop_signal: SIGINT
     ports:
       - "${DASHBOARD_PORT:-6791}:6791"
     environment:
